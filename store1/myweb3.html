@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>调用摄像头拍摄图片</title>
+</head>
+<body>
+    <video id="video" width="400" height="300" autoplay></video>
+    <button id="capture-btn">拍摄图片</button>
+    <canvas id="canvas" width="400" height="300"></canvas>
+    <img id="photo" src="./青青草原.jpg" alt="拍摄的图片">
+    
+    <script>
+        const video = document.getElementById('video');
+        const captureBtn = document.getElementById('capture-btn');
+        const canvas = document.getElementById('canvas');
+        const photo = document.getElementById('photo');
+        
+        // 获取用户媒体设备权限
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing media devices:', error);
+            });
+        
+        // 拍摄图片
+        captureBtn.addEventListener('click', () => {
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imgDataUrl = canvas.toDataURL();
+            photo.src = imgDataUrl;
+        });
+    </script>
+</body>
+</html>
